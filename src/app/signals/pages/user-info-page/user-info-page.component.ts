@@ -20,7 +20,22 @@ export class UserInfoPageComponent implements OnInit{
   loadUser(id: number):void{
     if(id <= 0 ) return;
 
-    this.userId.set(id)
+    this.userId.set(id);
+    this.currentUser.set(undefined)
+
+    this.usersService.getUserById( id )
+      .subscribe({
+        next: (user) => {
+          this.currentUser.set( user )
+          this.userWasFound.set(true)
+        },
+        error: () => {
+          this.userWasFound.set(false);
+          this.currentUser.set(undefined)
+        }
+        
+      })
       
   }
 }
+  
